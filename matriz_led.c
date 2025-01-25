@@ -163,7 +163,7 @@ int main() {
                     g[i] = 0.0;
                     b[i] = 1.0;
                 }
-                update_led_matrix(r, g, b, pio, sm); // Acende todos os LEDs em azul
+                update_led_matrix(r, g, b, pio, sm); // Acende todos os LEDs em azul 100%
                 break;
             
             case 'C':
@@ -172,7 +172,7 @@ int main() {
                     g[i] = 0.0;
                     b[i] = 0.0;
                 }
-                update_led_matrix(r, g, b, pio, sm); // Acende todos os LEDs em azul
+                update_led_matrix(r, g, b, pio, sm); // Acende todos os LEDs em vermelho 80%
                 break;
             
             case 'D':
@@ -181,7 +181,7 @@ int main() {
                     g[i] = 0.5;
                     b[i] = 0.0;
                 }
-                update_led_matrix(r, g, b, pio, sm); // Acende todos os LEDs em azul
+                update_led_matrix(r, g, b, pio, sm); // Acende todos os LEDs em verde 50%
                 break;
             
             case '#':
@@ -190,7 +190,7 @@ int main() {
                     g[i] = 0.2;
                     b[i] = 0.2;
                 }
-                update_led_matrix(r, g, b, pio, sm); // Acende todos os LEDs em azul
+                update_led_matrix(r, g, b, pio, sm); // Acende todos os LEDs em branco 20%
                 break;
         }
     }
