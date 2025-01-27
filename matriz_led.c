@@ -3,6 +3,7 @@
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "pio_matrix.pio.h"
+#include <stdlib.h>
 
 // Define o número de LEDs na matriz
 #define NUM_PIXELS 25
@@ -106,6 +107,38 @@ void anim1(int posit, double *r, double *g, double *b) {
     }
 }
 
+void rain_animation(int duration, double *r, double *g, double *b, PIO pio, uint sm) {
+    for (int i = 0; i < NUM_PIXELS; i++) {
+        r[i] = 0.0;
+        g[i] = 0.0;
+        b[i] = 0.0;
+    }
+
+    for (int i = 0; i < duration; i++) {
+        int random = rand() % 5 + (NUM_PIXELS - 5);
+        b[random] = 1.0;
+        update_led_matrix(r, g, b, pio, sm);
+        sleep_ms(200);
+        b[random] = 0.0;
+        b[random-5] = 1.0;
+        update_led_matrix(r, g, b, pio, sm);
+        sleep_ms(200);
+        b[random-5] = 0.0;
+        b[random-10] = 1.0;
+        update_led_matrix(r, g, b, pio, sm);
+        sleep_ms(200);
+        b[random-10] = 0.0;
+        b[random-15] = 1.0;
+        update_led_matrix(r, g, b, pio, sm);
+        sleep_ms(200);
+        b[random-15] = 0.0;
+        b[random-20] = 1.0;
+        update_led_matrix(r, g, b, pio, sm);
+        sleep_ms(200);
+        b[random-20] = 0.0;
+    }
+}
+
 // Função principal
 int main() {
     PIO pio = pio0; // Seleciona o PIO 0
@@ -147,6 +180,9 @@ int main() {
                 posit = 0;
                 break;
             
+            case '2':
+                rain_animation(50, r, g, b, pio, sm);
+                break;
 
             case 'A':
                 for(i = 0; i < NUM_PIXELS; i++){
