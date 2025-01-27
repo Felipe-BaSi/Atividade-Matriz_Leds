@@ -3,6 +3,7 @@
 ## Circuito no Wokwi
 
 No circuito, foram empregados, um teclado matricial 4x4, Matriz de Leds 5x5 e um microcontrolador Raspberry Pi Pico W.
+![image](https://github.com/user-attachments/assets/83595729-9f88-46bd-9e01-9ebdd457fbc9)
 
 ## Funcionamento
 
