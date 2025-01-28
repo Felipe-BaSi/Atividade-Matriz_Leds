@@ -3,6 +3,7 @@
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "pio_matrix.pio.h"
+#include "hardware/pwm.h"
 #include <stdlib.h>
 
 // Define o número de LEDs na matriz
@@ -11,9 +12,30 @@
 // Define o pino de saída para os LEDs
 #define OUT_PIN 15
 
+// Define o pino de saída do buzzer
+#define BUZZER 20
+
 // Definições para o teclado matricial
 const uint rows[4] = {1, 2, 3, 4};
 const uint columns[4] = {5, 6, 7, 8};
+
+// Função para inicializar o buzzer
+void buzzer_init(uint gpio, uint frequencia)
+{
+    uint slice_num = pwm_gpio_to_slice_num(gpio);
+    gpio_set_function(gpio, GPIO_FUNC_PWM);
+
+    uint32_t freq_relogio = 125000000;
+    uint16_t contador = freq_relogio / frequencia;
+
+    pwm_set_wrap(slice_num, contador);
+    pwm_set_chan_level(slice_num, pwm_gpio_to_channel(gpio), contador / 2);
+
+    pwm_set_enabled(slice_num, true);
+    sleep_ms(50);
+    pwm_set_enabled(slice_num, false);
+
+}
 
 // Mapeamento das teclas do teclado matricial
 char teclas[4][4] = {
@@ -77,16 +99,35 @@ void update_led_matrix(double *r, double *g, double *b, PIO pio, uint sm) {
 }
 
 // Função para animar os LEDs, alternando as cores
-void anim1(int posit, double *r, double *g, double *b) {
+void snake_animation(int posit, double *r, double *g, double *b){
     for (int i = 0; i < NUM_PIXELS; i++) {
         if(i < posit){
             r[i] = 0.0;
             g[i] = 0.0;
             b[i] = 0.0;
+
         } else {
-            r[i] = 0.5;
-            g[i] = 0.0;
-            b[i] = 0.0;
+            
+
+            switch(i){
+
+                case 5:
+                case 10:
+                case 15:
+                case 20:
+
+                    r[i] = 0.7;
+                    g[i] = 0.5;
+                    b[i] = 0.0;
+
+                break;
+
+                default:
+                    r[i] = 0.5;
+                    g[i] = 0.0;
+                    b[i] = 0.0;
+                break;
+            }
         }
     }
 
@@ -94,13 +135,20 @@ void anim1(int posit, double *r, double *g, double *b) {
     g[posit] = 0.7;
     b[posit] = 0.0;
 
-    if(posit > 0 && posit < 24){
+
+    if(posit == 5 || posit == 10 || posit == 15 || posit == 20){
+
+        buzzer_init(BUZZER, 1000);
+
+    }
+
+    if(posit > 0){
         r[posit-1] = 0.0;
         g[posit-1] = 0.7;
         b[posit-1] = 0.0;
     }
 
-    if(posit > 1 && posit < 24){
+    if(posit > 1){
         r[posit-2] = 0.0; 
         g[posit-2] = 0.7; 
         b[posit-2] = 0.0;
@@ -172,7 +220,7 @@ int main() {
             case '1':
                 posit = 0;
                 while(posit < NUM_PIXELS){
-                    anim1(posit, r, g, b); // Atualiza os valores RGB dos LEDs
+                    snake_animation(posit, r, g, b); // Atualiza os valores RGB dos LEDs
                     update_led_matrix(r, g, b, pio, sm); // Envia os valores RGB para a matriz de LEDs
                     posit++;
                     sleep_ms(200); // Velocidade da animação
@@ -181,7 +229,7 @@ int main() {
                 break;
             
             case '2':
-                rain_animation(50, r, g, b, pio, sm);
+                rain_animation(20, r, g, b, pio, sm);
                 break;
 
             case 'A':

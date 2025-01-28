@@ -27,6 +27,7 @@ Ao pressionar determinadas teclas do teclado matricial algumas funções são ac
 ## Vídeo de Apresentação
 
 A seguir o vídeo apresentando o circuito em funcionamento, sendo simulado na plataforma Wokwi.
+[![Vídeo de Apresentação](https://img.youtube.com/vi/yYEfE9IMQqU/maxresdefault.jpg)](https://www.youtube.com/watch?v=yYEfE9IMQqU)
 
 ## Execução do projeto
 

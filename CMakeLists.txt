@@ -48,6 +48,7 @@ pico_generate_pio_header(matriz_led ${CMAKE_CURRENT_LIST_DIR}/pio_matrix.pio)
 
 # Add the standard library to the build
 target_link_libraries(matriz_led
+        hardware_pwm
         pico_stdlib
         hardware_pio
         hardware_clocks
